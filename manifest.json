@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "Perplexity Search",
+  "version": "1.0.0",
+  "description": "Reindirizza le ricerche dalla barra degli indirizzi a Perplexity AI",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "webNavigation",
+    "*://www.google.com/*",
+    "*://www.google.it/*",
+    "*://www.google.co.uk/*",
+    "*://www.google.de/*",
+    "*://www.google.fr/*",
+    "*://www.google.es/*",
+    "*://www.google.ca/*",
+    "*://www.google.com.au/*",
+    "*://www.google.co.jp/*",
+    "*://www.google.com.br/*",
+    "*://www.bing.com/*",
+    "*://duckduckgo.com/*",
+    "*://search.yahoo.com/*"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png",
+    "256": "icons/icon-256.png"
+  }
+}
