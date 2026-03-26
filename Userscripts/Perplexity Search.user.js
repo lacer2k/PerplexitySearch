@@ -46,8 +46,13 @@
   }
 
   if (query) {
-    window.location.replace(
-      "https://www.perplexity.ai/search?q=" + encodeURIComponent(query)
-    );
+    if (query.endsWith("!")) return; // resta sul motore di default
+    let targetUrl;
+    if (query.endsWith("?")) {
+      targetUrl = "https://grok.com/?q=" + encodeURIComponent(query.slice(0, -1));
+    } else {
+      targetUrl = "https://www.perplexity.ai/search?q=" + encodeURIComponent(query);
+    }
+    window.location.replace(targetUrl);
   }
 })();

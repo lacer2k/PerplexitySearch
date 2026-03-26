@@ -1,10 +1,21 @@
 # Perplexity Search for Safari
 
-Userscript that redirects address bar searches from your default search engine to [Perplexity AI](https://www.perplexity.ai).
+Userscript that redirects address bar searches from your default search engine to [Perplexity AI](https://www.perplexity.ai) — with shortcuts to reach [Grok](https://grok.com) or stay on your default engine.
 
 ## How it works
 
-When you type a query in Safari's address bar, Safari navigates to your default search engine (Google, Bing, etc.). This script intercepts that navigation **before the page renders** and redirects to Perplexity AI with your query.
+When you type a query in Safari's address bar, Safari navigates to your default search engine (Google, Bing, etc.). This script intercepts that navigation **before the page renders** and routes it based on the suffix of your query:
+
+| Suffix | Destination |
+|--------|-------------|
+| *(none)* | Perplexity AI |
+| ends with `?` | Grok (suffix stripped) |
+| ends with `!` | Default search engine (no redirect) |
+
+Examples:
+- `history of rome` → Perplexity
+- `history of rome?` → Grok
+- `history of rome!` → Google / Bing / DuckDuckGo (unchanged)
 
 Supported search engines:
 - Google (all major TLDs)
@@ -41,7 +52,14 @@ PerplexitySearch/
 ├── background.js                    # extension background script
 ├── popup.html / .js / .css          # extension popup UI
 ├── icons/                           # generated PNG icons
-└── generate_icons.py                # icon generator script
+├── generate_icons.py                # icon generator script
+└── test.js                          # unit tests (Node.js, no dependencies)
+```
+
+## Running tests
+
+```bash
+node test.js
 ```
 
 > The `manifest.json`, `background.js`, `popup.*`, and `icons/` files are for building a native Safari Web Extension via Xcode. If you have Xcode installed, you can convert this into a full extension using `xcrun safari-web-extension-converter`.

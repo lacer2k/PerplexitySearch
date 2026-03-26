@@ -1,3 +1,4 @@
+const api = typeof browser !== "undefined" ? browser : chrome;
 const toggle = document.getElementById("toggle");
 const status = document.getElementById("status");
 
@@ -7,7 +8,7 @@ const MESSAGES = {
 };
 
 // Carica stato corrente
-browser.storage.local.get("enabled", (result) => {
+api.storage.local.get("enabled", (result) => {
   const isEnabled = result.enabled !== undefined ? result.enabled : true;
   toggle.checked = isEnabled;
   status.textContent = isEnabled ? MESSAGES.on : MESSAGES.off;
@@ -16,6 +17,6 @@ browser.storage.local.get("enabled", (result) => {
 // Gestisci toggle
 toggle.addEventListener("change", () => {
   const isEnabled = toggle.checked;
-  browser.storage.local.set({ enabled: isEnabled });
+  api.storage.local.set({ enabled: isEnabled });
   status.textContent = isEnabled ? MESSAGES.on : MESSAGES.off;
 });

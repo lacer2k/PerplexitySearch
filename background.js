@@ -1,17 +1,19 @@
-// Perplexity Search - Background Script
+// Perplexity Search - Background Script (MV3)
 // Intercetta le ricerche dai motori di ricerca e le reindirizza a Perplexity AI
 
+const api = typeof browser !== "undefined" ? browser : chrome;
 const PERPLEXITY_BASE = "https://www.perplexity.ai/search?q=";
+const GROK_BASE = "https://grok.com/?q=";
 
 let enabled = true;
 
 // Carica lo stato salvato
-browser.storage.local.get("enabled", (result) => {
+api.storage.local.get("enabled", (result) => {
   enabled = result.enabled !== undefined ? result.enabled : true;
 });
 
 // Ascolta cambiamenti allo stato
-browser.storage.onChanged.addListener((changes) => {
+api.storage.onChanged.addListener((changes) => {
   if (changes.enabled) {
     enabled = changes.enabled.newValue;
   }
@@ -54,14 +56,20 @@ function extractSearchQuery(urlString) {
 }
 
 // Intercetta la navigazione prima che avvenga
-browser.webNavigation.onBeforeNavigate.addListener((details) => {
+api.webNavigation.onBeforeNavigate.addListener((details) => {
   // Solo frame principale, ignora iframe
   if (!enabled || details.frameId !== 0) return;
 
   const query = extractSearchQuery(details.url);
 
   if (query) {
-    const perplexityUrl = PERPLEXITY_BASE + encodeURIComponent(query);
-    browser.tabs.update(details.tabId, { url: perplexityUrl });
+    if (query.endsWith("!")) return; // resta sul motore di default
+    let targetUrl;
+    if (query.endsWith("?")) {
+      targetUrl = GROK_BASE + encodeURIComponent(query.slice(0, -1));
+    } else {
+      targetUrl = PERPLEXITY_BASE + encodeURIComponent(query);
+    }
+    api.tabs.update(details.tabId, { url: targetUrl });
   }
 });
